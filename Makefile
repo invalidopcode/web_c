@@ -22,14 +22,12 @@ include config-default.mk
 ##### Elements
 EL_C := $(shell find $(EL_SRC_DIR) -type f -name "*.c")
 EL_BC := $(patsubst $(EL_SRC_DIR)/%.c,$(BC_DIR)/%.bc,$(EL_C))
-#EL_BC := $(ELEMENTS)
 EL_TARGETS := $(patsubst $(BC_DIR)/%.bc,$(SCRIPTS_DIR)/%.js,$(EL_BC))
 EL_WASM := $(patsubst %.js,%.wasm,$(EL_TARGETS))
 
 ##### Helpers
 HELPER_C := $(shell find $(HELPER_SRC_DIR) -type f -name "*.c")
 HELPER_BC := $(patsubst $(HELPER_SRC_DIR)/%.c,$(BC_DIR)/%.bc,$(HELPER_C))
-#HELPER_BC := $(HELPERS)
 
 ##### HTML Templates (need compiling)
 THEME_TEMPLATES := $(shell find $(THEME_SRC_DIR) -type f -name "*.htmpl")

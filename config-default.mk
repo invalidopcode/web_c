@@ -3,12 +3,6 @@
 ##### Please add to or override these in the configure.mk, elements.mk,
 ##### helpers.mk, theme.mk, and site.mk files.
 
-##### Elements Configuration -> apend new elements here
-#ELEMENTS := test_element.bc
-
-##### Helpers Configuration -> append new helpers here
-#HELPERS := jsc.bc
-
 ##### Theme Configuration. Set only name here, directory set later
 THEME := example
 
