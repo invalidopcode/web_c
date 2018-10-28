@@ -42,4 +42,5 @@ CP := cp
 CD := cd
 HTMPL := cp
 SED := sed
+MKDIR := mkdir -p
 
