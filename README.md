@@ -1,5 +1,6 @@
-# web_c
-a starting point for c-based web apps
+# web\_c
+
+A starting point for c-based web apps. Created as an experiment, will see how far it can go!
 
 ## Concepts
 
