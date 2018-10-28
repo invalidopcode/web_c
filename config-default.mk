@@ -20,8 +20,18 @@ THEME_SRC_DIR := $(THEMES_SRC_DIR)/$(THEME)
 SITE_SRC_DIR := $(SRC_DIR)/example-site
 
 ##### Flags configuration - include environment CFLAGS too
-CFLAGS_BC := $(CFLAGS) -I$(HELPER_SRC_DIR)
+CFLAGS_BC := $(CFLAGS) -c -I$(HELPER_SRC_DIR)
 CFLAGS_JS := $(CFLAGS) -s WASM=1 -s ENVIRONMENT=web -s MODULARIZE_INSTANCE=1 -s FETCH=1 -I$(HELPER_SRC_DIR)
+CFLAGS_DEP := -M $(CFLAGS_BC)
+
+## Flag reasons:
+# -M - create a dependency file INSTEAD of normal compiling
+# -c - only do bytecode compilation
+# -I... - add helper includes to search path
+# -s FETCH=1 - link to fetch api
+# -s MODULARIZE_INSTANCE=1 - complicated reasons - tldr: it's simpler
+# -s ENVIRONMENT=web - TODO
+# -s WASM=1 - TODO
 
 ##### Binaries Configuration
 CC := emcc
@@ -31,4 +41,5 @@ RM := rm
 CP := cp
 CD := cd
 HTMPL := cp
+SED := sed
 

@@ -21,12 +21,14 @@ include config-default.mk
 
 ##### Elements
 EL_C := $(shell find $(EL_SRC_DIR) -type f -name "*.c")
+EL_DEP := $(patsubst %.c,%.d,$(EL_C))
 EL_BC := $(patsubst $(EL_SRC_DIR)/%.c,$(BC_DIR)/%.bc,$(EL_C))
 EL_TARGETS := $(patsubst $(BC_DIR)/%.bc,$(SCRIPTS_DIR)/%.js,$(EL_BC))
 EL_WASM := $(patsubst %.js,%.wasm,$(EL_TARGETS))
 
 ##### Helpers
 HELPER_C := $(shell find $(HELPER_SRC_DIR) -type f -name "*.c")
+HELPER_DEP := $(patsubst %.c,%.d,$(HELPER_C))
 HELPER_BC := $(patsubst $(HELPER_SRC_DIR)/%.c,$(BC_DIR)/%.bc,$(HELPER_C))
 
 ##### HTML Templates (need compiling)
@@ -48,16 +50,18 @@ TEMPLATE_HTML_TARGETS := $(THEME_TEMPLATE_TARGETS) $(THEME_STATIC_TARGETS)
 STATIC_HTML_TARGETS := $(SITE_TEMPLATE_TARGETS) $(SITE_STATIC_TARGETS)
 HTML_TARGETS := $(TEMPLATE_HTML_TARGETS) $(STATIC_HTML_TARGETS)
 
+DEPENDENCY_FILES := $(EL_DEP) $(HELPER_DEP)
+
 #####
 ##### Main Rules 
 #####
 
 .PHONY: all clean dist_clean run
 
-all: $(EL_TARGETS) $(HTML_TARGETS)
+all: $(DEPENDENCY_FILES) $(EL_TARGETS) $(HTML_TARGETS)
 
 clean:
-	-$(RM) $(wildcard $(HELPER_BC) $(EL_BC))
+	-$(RM) $(wildcard $(HELPER_BC) $(EL_BC) $(DEPENDENCY_FILES))
 
 dist_clean: clean
 	-$(RM) $(wildcard $(EL_TARGETS) $(EL_WASM) $(HTML_TARGETS))
@@ -70,22 +74,28 @@ run: all $(BUILD_DIR)/index.html
 ##### Specific Rules
 #####
 
+##### Include dependency files
+-include $(DEPENDENCY_FILES)
+
 #####
 ##### Generic Rules
 #####
 
+##### Static HTML
 $(THEME_STATIC_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.html
 	$(CP) $< $@
 
 $(SITE_STATIC_TARGETS): $(BUILD_DIR)/%.html: $(SITE_SRC_DIR)/%.html
 	$(CP) $< $@
 
+##### Templated HTML
 $(THEME_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.htmpl
 	$(HTMPL) $< $@
 
 $(SITE_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(SITE_SRC_DIR)/%.htmpl
 	$(HTMPL) $< $@
 
+##### Webassembly
 $(HELPER_BC): $(BC_DIR)/%.bc: $(HELPER_SRC_DIR)/%.c
 	$(CC) $< $(CFLAGS_BC) -o $@
 
@@ -95,5 +105,10 @@ $(EL_BC): $(BC_DIR)/%.bc: $(EL_SRC_DIR)/%.c
 $(EL_TARGETS): $(SCRIPTS_DIR)/%.js: $(BC_DIR)/%.bc $(HELPER_BC)
 	$(CC) $< $(HELPER_BC) $(CFLAGS_JS) -o $@
 
-#TODO: dependency generation for c files
+##### C dependency files
+%.d: %.c
+	@set -e; \
+		$(CC) $< $(CFLAGS_DEP) -MF $@; \
+		$(SED) -i 's,\($(notdir $*)\)\.o[ :]*,$(BC_DIR)/\1.bc $@ : ,g' $@
+#sed fixes a lot AND makes the depfile get updated
 
