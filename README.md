@@ -19,6 +19,12 @@ structure
 * *templated html* is html run through a simple templating engine before
 being copied to the build directory as with static html
 
+## Dependencies
+
+* emscripten - for compilation https://kripken.github.io/emscripten-site/
+* gnu make - for building
+* gnu sed - used during building
+
 ## Building
 
 There'll be a proper configure script soon, but for the meantime:
@@ -30,4 +36,3 @@ There'll be a proper configure script soon, but for the meantime:
 
 `make all` will build the site into the build directory. This directory can be
 served from any web server as-is.
-
