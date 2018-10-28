@@ -22,9 +22,9 @@ being copied to the build directory as with static html
 
 There'll be a proper configure script soon, but for the meantime:
 
-# edit configuration values as necessary in config-default.mk
-# run gnu make to build
-# run `make run` to use emscripten's emrun tool to test the site. Will host
+* edit configuration values as necessary in config-default.mk
+* run gnu make to build
+* run `make run` to use emscripten's emrun tool to test the site. Will host
  build/index.html on localhost
 
 `make all` will build the site into the build directory. This directory can be
