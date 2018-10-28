@@ -6,3 +6,5 @@
 /build/css/*
 !/build/bc
 /build/bc/*
+/src/themes/*
+!/src/themes/example
