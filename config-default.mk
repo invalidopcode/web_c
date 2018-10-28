@@ -29,9 +29,10 @@ CFLAGS_DEP := -M $(CFLAGS_BC)
 # -c - only do bytecode compilation
 # -I... - add helper includes to search path
 # -s FETCH=1 - link to fetch api
-# -s MODULARIZE_INSTANCE=1 - complicated reasons - tldr: it's simpler
-# -s ENVIRONMENT=web - TODO
-# -s WASM=1 - TODO
+# -s MODULARIZE_INSTANCE=1 - complicated reasons, tldr: it's simpler
+# -s ENVIRONMENT=web - *probably* strips out code for handling non-web
+#                     environment
+# -s WASM=1 - we want wasm output, not just asm.js
 
 ##### Binaries Configuration
 CC := emcc
