@@ -88,27 +88,27 @@ $(BUILD_DIRECTORIES):
 	$(MKDIR) $@
 
 ##### Static HTML
-$(THEME_STATIC_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.html $(BUILD_DIRECTORIES)
+$(THEME_STATIC_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.html | $(BUILD_DIRECTORIES)
 	$(CP) $< $@
 
-$(SITE_STATIC_TARGETS): $(BUILD_DIR)/%.html: $(SITE_SRC_DIR)/%.html $(BUILD_DIRECTORIES)
+$(SITE_STATIC_TARGETS): $(BUILD_DIR)/%.html: $(SITE_SRC_DIR)/%.html | $(BUILD_DIRECTORIES)
 	$(CP) $< $@
 
 ##### Templated HTML
-$(THEME_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.htmpl $(BUILD_DIRECTORIES)
+$(THEME_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.htmpl | $(BUILD_DIRECTORIES)
 	$(HTMPL) $< $@
 
-$(SITE_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(SITE_SRC_DIR)/%.htmpl $(BUILD_DIRECTORIES)
+$(SITE_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(SITE_SRC_DIR)/%.htmpl | $(BUILD_DIRECTORIES)
 	$(HTMPL) $< $@
 
 ##### Webassembly
-$(HELPER_BC): $(BC_DIR)/%.bc: $(HELPER_SRC_DIR)/%.c $(BUILD_DIRECTORIES)
+$(HELPER_BC): $(BC_DIR)/%.bc: $(HELPER_SRC_DIR)/%.c | $(BUILD_DIRECTORIES)
 	$(CC) $< $(CFLAGS_BC) -o $@
 
-$(EL_BC): $(BC_DIR)/%.bc: $(EL_SRC_DIR)/%.c
+$(EL_BC): $(BC_DIR)/%.bc: $(EL_SRC_DIR)/%.c | $(BUILD_DIRECTORIES)
 	$(CC) $< $(CFLAGS_BC) -o $@
 
-$(EL_TARGETS): $(SCRIPTS_DIR)/%.js: $(BC_DIR)/%.bc $(HELPER_BC) $(BUILD_DIRECTORIES)
+$(EL_TARGETS): $(SCRIPTS_DIR)/%.js: $(BC_DIR)/%.bc $(HELPER_BC) | $(BUILD_DIRECTORIES)
 	$(CC) $< $(HELPER_BC) $(CFLAGS_JS) -o $@
 
 ##### C dependency files
