@@ -1,0 +1,8 @@
+*.d
+/build/*
+!/build/scripts
+/build/scripts/*
+!/build/css
+/build/css/*
+!/build/bc
+/build/bc/*
