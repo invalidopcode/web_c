@@ -1,0 +1,5 @@
+[ {"name":"thecat", "lives": 3, "colour":"black", "age": 7 },
+  {"name":"thedog", "colour": "brown", "age": 1},
+  {"name":"thehorse", "age": 5},
+  {"name":"thecow", "colour":"blue",   "age": "dead"}
+]

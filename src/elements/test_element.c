@@ -6,6 +6,17 @@
 
 int main()
 {
-  jsc_class_write("test_element", "<h1>test data loaded!</h1>");
+  jsc_el_t* el;
+   /*initialise jsc element*/
+    el = jsc_el_init("test_element");
+    jsc_el_clear(el);
+  
+   /*write to dom*/
+    jsc_el_appendf(el, "<h1>test element loaded!</h1>\n");
+    jsc_el_appendf(el, "<p class='test_success'>int: %d, string: \"%s\"</p>\n", 1337, "hax");
+    jsc_el_write(el);  /*flushes buffer so far*/
+
+   /*jsc element cleanup*/
+    jsc_el_finish(el);
   return(0);
 }

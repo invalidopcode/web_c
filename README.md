@@ -19,7 +19,7 @@ structure
 * *templated html* is html run through a simple templating engine before
 being copied to the build directory as with static html
 
-## Dependencies
+## Build Dependencies
 
 * emscripten - for compilation https://kripken.github.io/emscripten-site/
 * gnu make - for building
@@ -30,6 +30,7 @@ being copied to the build directory as with static html
 There'll be a proper configure script soon, but for the meantime:
 
 * edit configuration values as necessary in config-default.mk
+* ensure emscripten environment set up correctly (normally `. emsdk_env.sh` in emdsk source directory)
 * run gnu make to build
 * run `make run` to use emscripten's emrun tool to test the site. Will host
  build/index.html on localhost

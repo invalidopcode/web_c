@@ -10,10 +10,10 @@ include config-default.mk
 -include configure.mk
 
 ##### Include Makefiles for helpers, elements, theme, and site
--include $(HELPERS_DIR)/helpers.mk
--include $(ELEMENTS_DIR)/elements.mk
--include $(THEMES_DIR)/theme.mk
--include $(SITE_DIR)/site.mk
+-include $(HELPERS_SRC_DIR)/helpers.mk
+-include $(ELEMENTS_SRC_DIR)/elements.mk
+-include $(THEMES_SRC_DIR)/theme.mk
+-include $(SITE_SRC_DIR)/site.mk
 
 #####
 ##### Scanning for files
@@ -45,10 +45,17 @@ THEME_STATIC_TARGETS := $(patsubst $(THEME_SRC_DIR)/%.html,$(BUILD_DIR)/%.html,$
 SITE_STATIC := $(shell find $(SITE_SRC_DIR) -type f -name "*.html")
 SITE_STATIC_TARGETS := $(patsubst $(SITE_SRC_DIR)/%.html,$(BUILD_DIR)/%.html,$(SITE_STATIC))
 
+##### Styling
+THEME_STYLE := $(shell find $(THEME_SRC_DIR) -type f -name "*.css")
+THEME_STYLE_TARGETS := $(patsubst $(THEME_SRC_DIR)/%.css,$(STYLE_DIR)/%.css,$(THEME_STYLE))
+
 ##### Misc
-TEMPLATE_HTML_TARGETS := $(THEME_TEMPLATE_TARGETS) $(THEME_STATIC_TARGETS)
-STATIC_HTML_TARGETS := $(SITE_TEMPLATE_TARGETS) $(SITE_STATIC_TARGETS)
+TEMPLATE_HTML_TARGETS := $(THEME_TEMPLATE_TARGETS) $(SITE_TEMPLATE_TARGETS)
+STATIC_HTML_TARGETS := $(THEME_STATIC_TARGETS) $(SITE_STATIC_TARGETS)
 HTML_TARGETS := $(TEMPLATE_HTML_TARGETS) $(STATIC_HTML_TARGETS)
+
+SITE_TARGETS := $(SITE_TARGETS) $(SITE_TEMPLATE_TARGETS) $(SITE_STATIC_TARGETS)
+THEME_TARGETS := $(THEME_TARGETS) $(THEME_TEMPLATE_TARGETS) $(THEME_STATIC_TARGETS) $(THEME_STYLE_TARGETS)
 
 DEPENDENCY_FILES := $(EL_DEP) $(HELPER_DEP)
 
@@ -60,7 +67,7 @@ BUILD_DIRECTORIES := $(BUILD_DIR) $(BC_DIR) $(SCRIPTS_DIR) $(CSS_DIR)
 
 .PHONY: all clean dist_clean run
 
-all: $(BUILD_DIRECTORIES) $(DEPENDENCY_FILES) $(EL_TARGETS) $(HTML_TARGETS)
+all: $(BUILD_DIRECTORIES) $(DEPENDENCY_FILES) $(EL_TARGETS) $(THEME_TARGETS) $(SITE_TARGETS)
 
 clean:
 	-$(RM) $(wildcard $(HELPER_BC) $(EL_BC) $(DEPENDENCY_FILES))
@@ -87,6 +94,10 @@ run: all $(BUILD_DIR)/index.html
 $(BUILD_DIRECTORIES):
 	$(MKDIR) $@
 
+##### Styling
+$(THEME_STYLE_TARGETS): $(STYLE_DIR)/%.css: $(THEME_SRC_DIR)/%.css | $(BUILD_DIRECTORIES)
+	$(CP) $< $@
+
 ##### Static HTML
 $(THEME_STATIC_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.html | $(BUILD_DIRECTORIES)
 	$(CP) $< $@
@@ -101,15 +112,18 @@ $(THEME_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.htmpl | $(BUI
 $(SITE_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(SITE_SRC_DIR)/%.htmpl | $(BUILD_DIRECTORIES)
 	$(HTMPL) $< $@
 
+
 ##### Webassembly
 $(HELPER_BC): $(BC_DIR)/%.bc: $(HELPER_SRC_DIR)/%.c | $(BUILD_DIRECTORIES)
+	$(MKDIR) $(@D)
 	$(CC) $< $(CFLAGS_BC) -o $@
 
 $(EL_BC): $(BC_DIR)/%.bc: $(EL_SRC_DIR)/%.c | $(BUILD_DIRECTORIES)
+	$(MKDIR) $(@D)
 	$(CC) $< $(CFLAGS_BC) -o $@
 
 $(EL_TARGETS): $(SCRIPTS_DIR)/%.js: $(BC_DIR)/%.bc $(HELPER_BC) | $(BUILD_DIRECTORIES)
-	$(CC) $< $(HELPER_BC) $(CFLAGS_JS) -o $@
+	$(CC) $< $(HELPER_BC) $(CFLAGS_JS) -o $@ -s EXPORT_NAME=$(*F)
 
 ##### C dependency files
 %.d: %.c
