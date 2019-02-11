@@ -1,3 +1,5 @@
 *.d
 *.old
-/build/*
+test/build/*
+comutiny-client/build/*
+
