@@ -31,41 +31,37 @@ HELPER_C := $(shell find $(HELPER_SRC_DIR) -type f -name "*.c")
 HELPER_DEP := $(patsubst %.c,%.d,$(HELPER_C))
 HELPER_BC := $(patsubst $(HELPER_SRC_DIR)/%.c,$(BC_DIR)/%.bc,$(HELPER_C))
 
-##### HTML Templates (need compiling)
-THEME_TEMPLATES := $(shell find $(THEME_SRC_DIR) -type f -name "*.htmpl")
-THEME_TEMPLATE_TARGETS := $(patsubst $(THEME_SRC_DIR)/%.htmpl,$(BUILD_DIR)/%.html,$(THEME_TEMPLATES))
-
-SITE_TEMPLATES := $(shell find $(SITE_SRC_DIR) -type f -name "*.htmpl")
-SITE_TEMPLATE_TARGETS := $(patsubst $(SITE_SRC_DIR)/%.htmlpl,$(BUILD_DIR)/%.html,$(SITE_TEMPLATES))
-
 ##### Static HTML
 THEME_STATIC := $(shell find $(THEME_SRC_DIR) -type f -name "*.html")
 THEME_STATIC_TARGETS := $(patsubst $(THEME_SRC_DIR)/%.html,$(BUILD_DIR)/%.html,$(THEME_STATIC))
 
-SITE_STATIC := $(shell find $(SITE_SRC_DIR) -type f -name "*.html")
-SITE_STATIC_TARGETS := $(patsubst $(SITE_SRC_DIR)/%.html,$(BUILD_DIR)/%.html,$(SITE_STATIC))
+ifndef SITE_STATIC_SKIP
+	SITE_STATIC := $(shell find $(SITE_SRC_DIR) -type f -name "*.html")
+	SITE_STATIC_TARGETS := $(patsubst $(SITE_SRC_DIR)/%.html,$(BUILD_DIR)/%.html,$(SITE_STATIC))
+endif
+# NOTE - allows site to write it's own rules easier
 
 ##### Styling
 THEME_STYLE := $(shell find $(THEME_SRC_DIR) -type f -name "*.css")
 THEME_STYLE_TARGETS := $(patsubst $(THEME_SRC_DIR)/%.css,$(STYLE_DIR)/%.css,$(THEME_STYLE))
 
 ##### Misc
-TEMPLATE_HTML_TARGETS := $(THEME_TEMPLATE_TARGETS) $(SITE_TEMPLATE_TARGETS)
 STATIC_HTML_TARGETS := $(THEME_STATIC_TARGETS) $(SITE_STATIC_TARGETS)
-HTML_TARGETS := $(TEMPLATE_HTML_TARGETS) $(STATIC_HTML_TARGETS)
+HTML_TARGETS := $(STATIC_HTML_TARGETS) $(SITE_EXTRA_HTML_TARGETS)
 
-SITE_TARGETS := $(SITE_TARGETS) $(SITE_TEMPLATE_TARGETS) $(SITE_STATIC_TARGETS)
-THEME_TARGETS := $(THEME_TARGETS) $(THEME_TEMPLATE_TARGETS) $(THEME_STATIC_TARGETS) $(THEME_STYLE_TARGETS)
+SITE_TARGETS := $(SITE_TARGETS) $(SITE_TEMPLATE_TARGETS) $(SITE_STATIC_TARGETS) $(SITE_EXTRA_HTML_TARGETS)
+THEME_TARGETS := $(THEME_TARGETS) $(THEME_STATIC_TARGETS) $(THEME_STYLE_TARGETS)
 
 DEPENDENCY_FILES := $(EL_DEP) $(HELPER_DEP)
 
-BUILD_DIRECTORIES := $(BUILD_DIR) $(BC_DIR) $(SCRIPTS_DIR) $(CSS_DIR)
+BUILD_DIRECTORIES := $(BUILD_DIR) $(BC_DIR) $(SCRIPTS_DIR) $(STYLE_DIR)
 
 #####
 ##### Main Rules 
 #####
 
 .PHONY: all clean dist_clean run
+.DEFAULT_GOAL:= all
 
 all: $(BUILD_DIRECTORIES) $(DEPENDENCY_FILES) $(EL_TARGETS) $(THEME_TARGETS) $(SITE_TARGETS)
 
@@ -73,7 +69,7 @@ clean:
 	-$(RM) $(wildcard $(HELPER_BC) $(EL_BC) $(DEPENDENCY_FILES))
 
 dist_clean: clean
-	-$(RM) $(wildcard $(EL_TARGETS) $(EL_WASM) $(HTML_TARGETS))
+	-$(RM) $(wildcard $(EL_TARGETS) $(EL_WASM) $(HTML_TARGETS) $(THEME_TARGETS))
 
 ##### run rule to simplify testing
 run: all $(BUILD_DIR)/index.html
@@ -96,39 +92,31 @@ $(BUILD_DIRECTORIES):
 
 ##### Styling
 $(THEME_STYLE_TARGETS): $(STYLE_DIR)/%.css: $(THEME_SRC_DIR)/%.css | $(BUILD_DIRECTORIES)
-	$(CP) $< $@
+	@$(CP) $< $@
 
 ##### Static HTML
 $(THEME_STATIC_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.html | $(BUILD_DIRECTORIES)
-	$(CP) $< $@
+	@$(CP) $< $@
 
 $(SITE_STATIC_TARGETS): $(BUILD_DIR)/%.html: $(SITE_SRC_DIR)/%.html | $(BUILD_DIRECTORIES)
-	$(CP) $< $@
-
-##### Templated HTML
-$(THEME_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(THEME_SRC_DIR)/%.htmpl | $(BUILD_DIRECTORIES)
-	$(HTMPL) $< $@
-
-$(SITE_TEMPLATE_TARGETS): $(BUILD_DIR)/%.html: $(SITE_SRC_DIR)/%.htmpl | $(BUILD_DIRECTORIES)
-	$(HTMPL) $< $@
-
+	@$(CP) $< $@
 
 ##### Webassembly
 $(HELPER_BC): $(BC_DIR)/%.bc: $(HELPER_SRC_DIR)/%.c | $(BUILD_DIRECTORIES)
 	$(MKDIR) $(@D)
-	$(CC) $< $(CFLAGS_BC) -o $@
+	$(CC_WEB) $< $(CFLAGS_BC) -o $@
 
 $(EL_BC): $(BC_DIR)/%.bc: $(EL_SRC_DIR)/%.c | $(BUILD_DIRECTORIES)
 	$(MKDIR) $(@D)
-	$(CC) $< $(CFLAGS_BC) -o $@
+	$(CC_WEB) $< $(CFLAGS_BC) -o $@
 
 $(EL_TARGETS): $(SCRIPTS_DIR)/%.js: $(BC_DIR)/%.bc $(HELPER_BC) | $(BUILD_DIRECTORIES)
-	$(CC) $< $(HELPER_BC) $(CFLAGS_JS) -o $@ -s EXPORT_NAME=$(*F)
+	$(CC_WEB) $< $(HELPER_BC) $(CFLAGS_JS) -o $@ -s EXPORT_NAME=$(*F)
 
 ##### C dependency files
 %.d: %.c
 	@set -e; \
-		$(CC) $< $(CFLAGS_DEP) -MF $@; \
+		$(CC_WEB) $< $(CFLAGS_DEP) -MF $@; \
 		$(SED) -i 's,\($(notdir $*)\)\.o[ :]*,$(BC_DIR)/\1.bc $@ : ,g' $@
 #sed fixes a lot AND makes the depfile get updated
 

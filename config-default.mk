@@ -4,23 +4,28 @@
 ##### helpers.mk, theme.mk, and site.mk files.
 
 ##### Main configuration
-#ENVIRONMENT := test
-ENVIRONTMENT := production
-THEME := example
-SITE := example-site
+ENVIRONMENT := test
+ #ENVIRONTMENT := production
+
+ #SITE := test
+ #THEME := example
+SITE := comutiny-client
+THEME := basic
 
 ##### Directories Configuration
-BUILD_DIR := build
+BUILD_DIR := $(SITE)/build
 BC_DIR := $(BUILD_DIR)/bc
 SCRIPTS_DIR := $(BUILD_DIR)/scripts
 STYLE_DIR := $(BUILD_DIR)/css
 
 SRC_DIR := src
-EL_SRC_DIR := $(SRC_DIR)/elements
 HELPER_SRC_DIR := $(SRC_DIR)/el_helpers
-THEMES_SRC_DIR := $(SRC_DIR)/themes
+
+SITE_DIR := $(SITE)
+EL_SRC_DIR := $(SITE_DIR)/elements
+THEMES_SRC_DIR := $(SITE_DIR)/themes
 THEME_SRC_DIR := $(THEMES_SRC_DIR)/$(THEME)
-SITE_SRC_DIR := $(SRC_DIR)/$(SITE)
+SITE_SRC_DIR := $(SITE_DIR)/site
 
 ##### Flags configuration - include environment CFLAGS too
 CFLAGS_RUNTIME := -s "EXTRA_EXPORTED_RUNTIME_METHODS=['ALLOC_NORMAL', 'ALLOC_STACK', 'ALLOC_STATIC', 'ALLOC_DYNAMIC', 'ALLOC_NONE', 'print', 'printErr']"
@@ -49,13 +54,12 @@ CFLAGS_DEP := -M $(CFLAGS_BC)
 # -DJCMAP_DEBUG - set constant so that debug messages printed by jcmap
 
 ##### Binaries Configuration
-CC := emcc
-GCC := gcc
-SASS := sass
+CC ?= clang
+CC_WEB ?= emcc
+CC_BIN := $(CC)
 RM := rm
 CP := cp
 CD := cd
-HTMPL := cp
 SED := sed
 MKDIR := mkdir -p
 
