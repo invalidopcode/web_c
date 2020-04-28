@@ -36,6 +36,16 @@ content and metadata into json files, to be read by theme.mk
 * *theme* `\<site\>/theme` the theme takes the content and transforms it
 into a built site, properly stylised
 
+## Example Sites
+
+* *test* runs a series of tests on the code in src/helpers/jcmap and displays
+the results
+* *comutiny-client* is a work-in-progress lightweight blog
+
+Both example sites can be built by setting the SITE and THEME variables in
+config-default.mk, and running `make`. Run `make run` to test on the local
+machine.
+
 ## Build Dependencies
 
 * emscripten - for compilation to js https://kripken.github.io/emscripten-site/
