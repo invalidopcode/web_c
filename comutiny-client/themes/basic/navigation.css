@@ -1,0 +1,30 @@
+.menu {
+  padding: var(--menupadding);
+  margin: var(--menumargin);
+  border-bottom: 2px solid var(--menuborder);
+  background-color: var(--menubg);
+  text-align: center;
+  font-size: var(--menuitemsize);
+  font-family: var(--fonttext), sans-serif;
+  font-weight: 700;
+}
+
+.menu span:last-of-type {
+  display: none;  /*last span is unnecesary delimeter, kill it*/
+}
+
+.menu .delimiter {
+  color: var(--menulines);
+}
+
+.menu A {
+  margin: 0 5px;
+  color: var(--menulink);
+}
+
+.menu A:hover {
+  border-bottom: 2px solid var(--menulinkhover);
+  color: var(--menulinkhover);
+  transition-duration: 0;
+}
+

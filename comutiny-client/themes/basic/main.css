@@ -1,0 +1,19 @@
+/*main default values*/
+BODY {
+  margin: 3% 2%;
+  background: var(--bodybg);
+  font-family: var(--fonttext), sans-serif;
+  font-size: 100%;
+}
+
+#container {
+  margin: 0 auto;
+  padding: 0;
+  width: 98%;
+  background-color: var(--containerbg);
+}
+
+.footer {
+  margin-top: 85px;
+}
+

@@ -1,0 +1,37 @@
+/*control panel styling*/
+
+.control-panel {
+  text-align: center;
+  margin: auto;
+}
+
+.control-panel-item {
+  padding: 2em;
+  display: inline-block;
+  text-align: center;
+  transition: transform 0.1s;
+}
+
+.control-panel-item:hover {
+  transform: scale(1.1);
+}
+
+.control-icon {
+  font-size: var(--control-icon-size);
+  margin-bottom: 0.2em;
+}
+
+/*individual elements*/
+.control-user {
+  color: green;
+}
+.control-site {
+  color: orange;
+}
+.control-post {
+  color: red;
+}
+.control-event {
+  color: purple;
+}
+

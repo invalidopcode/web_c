@@ -1,0 +1,149 @@
+/***** Printable *****/
+@media print {
+ /*use serif font - easier to read on paper*/
+  BODY {
+    font-family: serif;
+  }
+
+ /*no menu needed*/
+  .menu {
+    display: none;
+  }
+
+ /*no footer needed*/
+  .footer {
+    display: none;
+  }
+
+ /*show images like it's widescreen view*/
+  .post IMG {
+    display: unset;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: unset;
+    width: unset;
+  }
+
+  .post .post-content IMG {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: unset;
+  }
+
+  .post .post-content IMG[src$="#left"] {
+    display: unset;
+    float: left;
+    margin-left: 0px;
+   }
+
+  .post .post-content IMG[src$="#right"] {
+    display: unset;
+    float: right;
+    margin-left: 0px;
+  }
+}
+
+/***** Mobile (==default) *****/
+@media screen and (max-width:349px) {
+}
+
+/***** Small Screen *****/
+@media only screen and (min-width: 350px) and (max-width: 959px) {
+}
+
+/***** Big Screen *****/
+@media only screen and (min-width: 960px) {
+  BODY {
+    margin: unset;
+    background: unset;
+    background-color: var(--bodybigbg);
+    font-size: var(--bigfontscale);
+  }
+
+  .post IMG {
+    display: unset;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: unset;
+  }
+
+  .post .post-content IMG {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: unset;
+  }
+    
+  .post .post-content IMG[src$="#left"] {
+    display: unset;
+    float: left;
+    margin-left: 0px;
+  }
+
+  .post .post-content IMG[src$="#right"] {
+    display: unset;
+    float: right;
+    margin-left: 0px;
+  }
+
+  #container {
+    margin: var(--vbigcontainermargin);
+    padding: var(--vbigcontainerpadding);
+    width: var(--bigcontainer);
+    background-color: var(--containerbg);
+  }
+
+  .footer {
+    margin: var(--bigfootermargin);
+  }
+}
+
+/***** VERY Big Screen *****/
+@media only screen and (min-width: 1300px) {
+  BODY {
+    margin: unset;
+    background: unset;
+    background-color: var(--bodybigbg);
+    font-size: var(--vbigfontscale);
+  }
+
+  .post IMG {
+    display: unset;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: unset;
+  }
+
+  .post .post-content IMG {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: unset;
+  }
+    
+  .post .post-content IMG[src$="#left"] {
+    display: unset;
+    float: left;
+    margin-left: 0px;
+  }
+
+  .post .post-content IMG[src$="#right"] {
+    display: unset;
+    float: right;
+    margin-left: 0px;
+  }
+
+  #container {
+    margin: var(--vbigcontainermargin);
+    padding: var(--vbigcontainerpadding);
+    width: var(--vbigcontainer);
+    background-color: var(--containerbg);
+  }
+
+  .footer {
+    margin: var(--vbigfootermargin);
+  }
+
+}
+

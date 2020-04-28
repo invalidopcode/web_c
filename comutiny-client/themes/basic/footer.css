@@ -1,0 +1,20 @@
+.footer-line {
+  height: 3px;
+  background-color: var(--footerlines);
+}
+
+.social-links {
+  margin-top: -15px;
+  text-align: center;
+}
+
+.social-links .social-links-inner {
+  display: inline-block;
+  padding: 0 15px;
+  background: var(--footerbg);
+}
+
+.session_bar {
+  text-align: right;
+}
+

@@ -1,0 +1,62 @@
+.header {
+  display: block;
+  /*padding: 45px 0 40px;*/
+  background-color: var(--headerbg);
+  background-position: center center;
+  background-size: cover;
+  color: var(--headerfg);
+  text-align: center;
+}
+
+.header .site-title {
+  display: inline-block;
+  margin: var(--titlemargin);
+  padding: var(--titlepadding);
+  border: 4px solid var(--headerfg);
+  color: var(--headerfg);
+  font-family: var(--fonttitle), serif;
+  text-transform: uppercase;
+  /*letter-spacing: 10px;*/
+  font-weight: 700;
+  font-size: var(--titlesize);
+  line-height: 1;
+  text-transform: uppercase;
+}
+.header .site-title a {
+  color: var(--headerfg);
+  text-decoration: none;
+}
+.header .site-title a:hover {
+  color: var(--headerfg);
+  text-decoration: none;
+}
+
+.header .site-description {
+  font-size: var(--subtitlesize);
+  font-family: var(--fonttext), sans-serif;
+  line-height: 1;
+  margin: var(--subtitlemargin);
+}
+
+/*lines before and after subtitle*/
+.header .site-description:before {
+  display: inline-block;
+  margin-right: 12px;
+  margin-bottom: 6px;
+  width: 30px;
+  height: 3px;
+  background: var(--headerlines);
+  content: "";
+  vertical-align: middle;
+}
+.header .site-description:after {
+  display: inline-block;
+  margin-bottom: 6px;
+  margin-left: 10px;
+  width: 30px;
+  height: 3px;
+  background: var(--headerlines);
+  content: "";
+  vertical-align: middle;
+}
+

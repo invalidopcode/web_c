@@ -1,0 +1,69 @@
+/*use these css files. Files contain logic, config is via variables below...*/
+@import "main.css";
+@import "typography.css";
+@import "header.css";
+@import "footer.css";
+@import "navigation.css";
+@import "control.css";
+@import "form.css";
+@import "mediaqueries.css";
+
+/*define some variables*/
+:root {
+ /*fonts*/
+  --fonttitle: 'Alegreya';
+  --fonttext: 'Titillium';
+  --fontcode: 'Source Code Pro';
+
+ /*font sizes*/
+  --titlesize: 5em;
+  --subtitlesize: 1.2em;
+  --menuitemsize: 1.2em;
+  --textsize: 1em;
+  --codesize: 0.8em;
+  --control-icon-size: 5em;
+
+ /*colours (TODO: cull)*/
+  --headerbg: #ffffff;
+  --headerfg: #000000;
+  --headerlines: #000000;
+  --menuborder: #eaeaea;
+  --menubg: #e0e0e0;
+  --menulines: #999999;
+  --menulink: #333333;
+  --menulinkhover: #777777;
+  --containerbg: #ffffff;
+  --bodybg: #ffffff;
+  --linkcol: #008ace; 
+  --linkhovercol: #00abff;
+  --quoteborder: #f0f0f0;
+  --quotebg: #f8f8f8;
+  --preborder: #f1f1f1;
+  --prebg: #fcfcfc; 
+  --bodylines: #eaeaea;
+  --footerbg: #ffffff;
+  --footerlines: #ccc;
+
+ /*design proportions*/
+  --titlepadding: 20px 15px 20px 25px;
+  --titlemargin: 0 0 5px; /*was 0 0 15px*/
+  --subtitlemargin: 0 0 1.2em;
+  --menupadding: 0.5em;
+  --menumargin: 0 0 2em;
+
+ /*media-dependent variables*/
+  --bodybigbg: #ebe8df;
+
+  --bigcontainer: 750px;
+  --bigcontainermargin: 20px auto;
+  --bigcontainerpadding: 20px 50px 20px 50px;
+  --bigfootermargin: 60px 0 0 0;
+  --bigfontscale: 100%;
+
+  --vbigcontainer: 950px;
+  --vbigcontainermargin: 20px auto;
+  --vbigcontainerpadding: 20px 50px 20px 50px;
+  --vbigfootermargin: 60px 0 0 0;
+  --vbigfontscale: 150%;
+}
+

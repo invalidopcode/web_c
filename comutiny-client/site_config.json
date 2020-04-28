@@ -1,0 +1,22 @@
+{
+  "title": "co mutiny",
+  "description": "our platform, our voice",
+  "menu": [
+    {"text": "Home",
+     "link": "/index.html"},
+    {"text": "NewsFeed",
+     "link": "/index.html"},
+    {"text": "Events",
+     "link": "/index.html"},
+    {"text": "Subscribe",
+     "link": "/index.html"},
+    {"text": "Contact",
+     "link": "/index.html"},
+    {"text": "Contribute",
+     "link": "/index.html"}
+  ],
+  "url":{
+    "session": "http://localhost:8880"
+  }
+}
+

@@ -1,0 +1,25 @@
+<!--login page-->
+
+<!--@WEBC_META>{
+  "title":"sign in - coMUTINY"
+}<\-->
+
+<form class="login-container" action="{{url.session}}/new" method="post" autocomplete="off">
+  <label>
+    <strong>Username</strong>
+    <input type=text placeholder="Enter Username" name="username" required>
+  </label>
+
+  <label>
+    <strong>Password</strong>
+    <input type="password" placeholder="Enter Password" name="password" required>
+  </label>
+
+  <label>
+    <input type="checkbox" name="cookies" required>
+    accept cookies for session
+  </label>
+
+  <button type="submit">Login</button>
+</form>
+

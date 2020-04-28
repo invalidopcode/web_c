@@ -1,0 +1,48 @@
+/*H1, H2, H3, H4, H5, H6 {
+  font-family: var(--fonttitle), serif;
+}*/
+/*removed as in this set up, looks better*/
+
+P {
+  margin-bottom: 20px;
+  font-size: var(--textsize);
+}
+
+A {
+  color: var(--linkcol);
+  text-decoration: none;
+}
+
+A:hover {
+  color: var(--linkhovercol);
+  transition-duration: 0.8s;
+}
+
+BLOCKQUOTE {
+  display: block;
+  margin: 0;
+  padding: 5px 10px 5px 15px;
+  border-left: 7px solid var(--quoteborder);
+  background: var(--quotebg)
+  font-style: italic;
+}
+
+PRE {
+  padding: 10px 15px;
+  border: 1px solid var(--preborder);
+  background: var(--prebg);
+}
+
+PRE CODE {
+  font-size: var(--codesize);
+  font-family: var(--fontcode), monospace;
+  line-height: 1.8;
+}
+
+HR {
+  width: 200px;
+  height: 3px;
+  border: none;
+  background-color: var(--bodylines);
+}
+
