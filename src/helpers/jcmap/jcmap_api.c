@@ -57,12 +57,43 @@ size_t jcmap_json_count(void* buffer, size_t buffer_limit)
     if (st_valid != jcmap_st_get_status(state))
     {
       jcmap_st_destroy(state);
-      printf("error validating json - %s\n", str_err);
+      fprintf(stderr, "error validating json - %s\n", str_err);
       errno = EINVAL;
       return(0);
     }
 
     count = jcmap_st_get_count( state );
+
+   /*free state*/
+    jcmap_st_destroy(state);
+  return(count);
+}
+
+size_t jcmap_json_byte_count(void* buffer, size_t buffer_limit)
+{
+  jcmap_state_t* state;
+  char* str_err;
+  size_t count = 0;
+   /*initialise state*/
+    state = jcmap_st_create(st_validate, buffer, buffer_limit);
+    if (NULL == state)
+    {
+      errno = EAGAIN;  /*unknown reason, so this is the best we can do*/
+      return(0);
+    }
+
+   /*get result*/
+    str_err = jcmap_st_value(state);
+    if (st_valid != jcmap_st_get_status(state))
+    {
+      jcmap_st_destroy(state);
+      fprintf(stderr, "error validating json - %s\n", str_err);
+      errno = EINVAL;
+      return(0);
+    }
+
+    count = state->buffer - (char*)buffer;  /*state buffer is at end of json, so just subtract*/
+    count++;  /*count should be a len, not a limit*/
 
    /*free state*/
     jcmap_st_destroy(state);

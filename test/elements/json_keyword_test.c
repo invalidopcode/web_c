@@ -2,8 +2,10 @@
 
          Licensed under the GNU General Public License v3.0
          see LICENSE file for more information*/
+#   ifndef WEBC_STDIO
 #include <emscripten.h>
 #include <emscripten/fetch.h>
+#   endif
 #include <string.h>
 #include <stddef.h>
 #include <stdlib.h>

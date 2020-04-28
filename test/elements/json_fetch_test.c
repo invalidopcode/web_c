@@ -2,8 +2,10 @@
 
          Licensed under the GNU General Public License v3.0
          see LICENSE file for more information*/
+#   ifndef WEBC_STDIO
 #include <emscripten.h>
 #include <emscripten/fetch.h>
+#   endif
 #include <string.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -15,6 +17,9 @@
 
 int main(int argc, const char ** argv)
 {
+#ifdef WEBC_STDIO
+  return(1);
+#else
   emscripten_fetch_attr_t fetch_attr_1;
    /*build emscripten fetch object*/
     emscripten_fetch_attr_init(&fetch_attr_1);
@@ -29,8 +34,10 @@ int main(int argc, const char ** argv)
     emscripten_fetch(&fetch_attr_1, "/test_array.json");  /*ASYNC*/
 
   return(0);
+#endif
 }
 
+#ifndef   WEBC_STDIO
 void cb_test_fetch(emscripten_fetch_t *fetch)
 {
   char* data = (char*)( fetch->data );
@@ -97,6 +104,6 @@ void cb_test_fetch_error(emscripten_fetch_t *fetch)
   jsc_el_finish(el);
   emscripten_fetch_close(fetch);
 }
-
+#   endif
 /*TODO: is sync error handling done right on ..._fetch??? & what about attr construction fns?*/
 

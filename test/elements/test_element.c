@@ -1,7 +1,9 @@
 /* test_element.c - simple web_c element
          licensed under the GNU General Public License v3.0
          see LICENSE file for more information*/
+#   ifndef WEBC_STDIO
 #include <emscripten.h>
+#   endif
 #include <jsc.h>
 
 int main()

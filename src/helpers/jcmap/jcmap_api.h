@@ -24,6 +24,7 @@
  /*NOTE sub objects*/
  int jcmap_json_validate(void* buffer, size_t buffer_limit);
  size_t jcmap_json_count(void* buffer, size_t buffer_limit);
+ size_t jcmap_json_byte_count(void* buffer, size_t buffer_limit);
  int jcmap_json_map_object(void* object, jcmap_map_handle_t* map, void* buffer, size_t buffer_limit);
  int jcmap_json_map_array(void* object, size_t object_size, void* array, size_t n_elements, jcmap_map_handle_t* map, void* buffer, size_t buffer_limit);
  void* jcmap_json_aquire(jcmap_target_t target_type, void* buffer, size_t buffer_limit);

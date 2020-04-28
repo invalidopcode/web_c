@@ -1,5 +1,5 @@
 /* res_config.h - configuration options for reusable resource code
- *
+ * 
  * This file is released into the public domain, and permission is granted
  * to use, modify, and / or redistribute at will. This software is provided
  * 'as-is', without any express or implied  warranty. In no event will the

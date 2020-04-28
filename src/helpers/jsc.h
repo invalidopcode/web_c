@@ -18,5 +18,7 @@
  int jsc_el_write(jsc_el_t* el);  /*flushes buffer to dom, appending to all html elements matching class_name. Resets buffer. Returns true on success, false on failure*/
  int jsc_el_clear(jsc_el_t* el);  /*clears all contents of matching dom elements. Returns true on success, false on failure*/
  int jsc_el_finish(jsc_el_t* el);  /*cleanup memory allocated in init and by buffer*/
+
+ char* jsc_get_session_cookie();
 #endif
 

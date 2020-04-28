@@ -9,8 +9,10 @@
    int age;
  } t_animal;
 
+#ifndef WEBC_STDIO
  void cb_test_fetch(emscripten_fetch_t *fetch);
  void cb_test_fetch_error(emscripten_fetch_t *fetch);
+#endif
 
  void test_json_string_valid(jsc_el_t* el);
  void test_json_string_count(jsc_el_t* el);

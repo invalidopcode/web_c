@@ -1,7 +1,11 @@
 /*jsc.c - source of jsc helper
          licensed under the GNU General Public License v3.0
          see LICENSE file for more information*/
+#  ifdef WEBC_STDIO
+#include <stdio.h>
+#  else
 #include <emscripten.h>
+#  endif
 #include <stdlib.h>
 #include <stdbool.h>
 #include <res/buffer.h>
@@ -59,8 +63,13 @@ int jsc_el_write(jsc_el_t* el)
   if ( 0 != res_buffer_reset(el->buffer) )
     return (false);
 
+#  ifdef WEBC_STDIO
+ /*write it to stdio*/
+  printf("%s", (char*)res_buffer_get(el->buffer));
+#  else
  /*write it to the DOM as a string*/
   EM_ASM({var i; var elements = document.getElementsByClassName(UTF8ToString($0)); for(i=0; i<elements.length; i++){elements[i].insertAdjacentHTML('beforeend', UTF8ToString($1));}}, el->class_name, res_buffer_get(el->buffer));
+#  endif
 
  /*return success*/
   return (true);
@@ -68,8 +77,39 @@ int jsc_el_write(jsc_el_t* el)
 
 int jsc_el_clear(jsc_el_t* el)
 {
+#    ifndef WEBC_STDIO
   EM_ASM({var i; var elements = document.getElementsByClassName(UTF8ToString($0)); for(i=0; i<elements.length; i++){elements[i].innerHTML = UTF8ToString($1);}}, el->class_name, "");
+#    endif
+  /*nothing to do for stdio*/
 
  /*return success*/
   return (true);
 }
+
+#   ifdef WEBC_STDIO
+char* jsc_get_session_cookie()
+{
+  return NULL;
+}
+#   else
+EM_JS(char*, jsc_get_session_cookie, (), {
+  var name = "session=";
+  var cookies = decodeURIComponent(document.cookie).split(';');
+  for(var i=0; i<cookies.length; i++) {
+    var cookie = cookies[i];
+    while (cookie.charAt(0) == ' ') {
+      cookie = cookie.substring(1);
+    }
+    if (cookie.indexOf(name) == 0) {
+      var js_cookie = cookie.substring(name.length, cookie.length);
+      var size = lengthBytesUTF8(js_cookie)+1;
+      var c_cookie = _malloc(size);
+      stringToUTF8(js_cookie, c_cookie, size+1);
+      return c_cookie;
+    }
+  }
+
+  return null;
+});
+#   endif
+
